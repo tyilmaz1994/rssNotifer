@@ -1,0 +1,38 @@
+version: '3.6'
+
+volumes:
+    mongodb:
+    mongoconfig:
+
+networks:
+    mongo_net:
+        driver: ${BRIDGE}
+
+services:
+
+    my-mongodb:
+        image: mongo:latest
+        container_name: my-mongodb
+        environment:
+            - MONGO_DATA_DIR=/data/db
+            - MONGO_LOG_DIR=/dev/null
+        volumes:
+            - mongodb:/data/db
+            - mongoconfig:/data/configdb
+        ports:
+            - 27017:27017
+        restart: always
+        networks:
+            - mongo_net
+
+    my-notifier.api:
+        build:
+            context: .
+            dockerfile: src/notifer.api/Dockerfile
+        restart: always
+        ports:
+          - 192.168.0.111:5000:5000
+        networks:
+            - mongo_net
+        depends_on:
+            - my-mongodb
