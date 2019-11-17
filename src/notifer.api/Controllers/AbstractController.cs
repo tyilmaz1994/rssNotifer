@@ -88,7 +88,7 @@ namespace notifer.api.Controllers
                 }
                 else
                 {
-                    response.Entity = _service.Save(entity);
+                    response.Entity = _service.Save(request.Entity);
                 }
             }
 
@@ -118,7 +118,7 @@ namespace notifer.api.Controllers
                 }
             }
 
-            return response;
+            return Json(response);
         }
     }
 }

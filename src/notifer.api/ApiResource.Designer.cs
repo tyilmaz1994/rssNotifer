@@ -79,6 +79,15 @@ namespace notifer.api {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://www.linkedin.com/in/tunahanyilmaz/ I&apos;m healthy..
+        /// </summary>
+        public static string healtcheck_answer {
+            get {
+                return ResourceManager.GetString("healtcheck_answer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Received Id format is not correct.
         /// </summary>
         public static string id_format_is_not_correct {

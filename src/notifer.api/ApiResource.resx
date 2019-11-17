@@ -123,6 +123,9 @@
   <data name="entity_not_found_by_given_id" xml:space="preserve">
     <value>Entity not found by given Id</value>
   </data>
+  <data name="healtcheck_answer" xml:space="preserve">
+    <value>https://www.linkedin.com/in/tunahanyilmaz/ I'm healthy.</value>
+  </data>
   <data name="id_format_is_not_correct" xml:space="preserve">
     <value>Received Id format is not correct</value>
   </data>

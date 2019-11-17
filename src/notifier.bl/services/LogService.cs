@@ -18,7 +18,6 @@ namespace notifier.bl.services
         {
             _repo.Add(new NotiferLog
             {
-                Active = (short)Active.Yes,
                 LogLevel = (short)logLevel,
                 Message = ex.Message,
                 StackTrace = ex.ToString(),

@@ -2,19 +2,19 @@
 {
     public class NotifierDbContext : INotifierDbContext
     {
-        public string ConnectionString { get; set; }
+        public string ConnectionString { get { return "mongodb://localhost:27017"; } }
 
-        public string LogCollectionName { get; set; }
+        public string LogCollectionName { get { return "log"; } }
 
-        public string DatabaseName { get; set; }
+        public string DatabaseName { get { return "dbNotify"; } } 
     }
 
     public interface INotifierDbContext
     {
-        string ConnectionString { get; set; }
+        string ConnectionString { get; }
 
-        string LogCollectionName { get; set; }
+        string LogCollectionName { get; }
 
-        string DatabaseName { get; set; }
+        string DatabaseName { get; }
     }
 }

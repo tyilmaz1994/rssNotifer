@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "notifer.api", "src\notifer.api\notifer.api.csproj", "{EFE57F85-63BC-43D4-B7C8-C66EF8986228}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "notifier.dal", "src\notifier.dal\notifier.dal.csproj", "{317E8920-3380-40B0-A158-2F33DE9C177B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "notifier.dal", "src\notifier.dal\notifier.dal.csproj", "{317E8920-3380-40B0-A158-2F33DE9C177B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "notifier.bl", "src\notifier.bl\notifier.bl.csproj", "{BE745DAA-FA64-4A1C-9074-37D528CF743A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "notifier.bl", "src\notifier.bl\notifier.bl.csproj", "{BE745DAA-FA64-4A1C-9074-37D528CF743A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "notifier.tests", "src\notifier.tests\notifier.tests.csproj", "{37FF8558-032D-497D-AAFB-0A63442E0533}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{BE745DAA-FA64-4A1C-9074-37D528CF743A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE745DAA-FA64-4A1C-9074-37D528CF743A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE745DAA-FA64-4A1C-9074-37D528CF743A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37FF8558-032D-497D-AAFB-0A63442E0533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37FF8558-032D-497D-AAFB-0A63442E0533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37FF8558-032D-497D-AAFB-0A63442E0533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37FF8558-032D-497D-AAFB-0A63442E0533}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,7 +12,7 @@ namespace notifier.dal.entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        public short Active { get; set; }
+        public short Active { get; set; } = 1; // 1 is represent notifier.bl.enums.Active.Yes
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreatedDate { get; set; } = DateTime.Now;

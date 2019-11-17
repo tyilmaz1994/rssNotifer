@@ -10,7 +10,7 @@ namespace notifer.api.Controllers.v1._0
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return string.Concat("https://www.linkedin.com/in/tunahanyilmaz/ I'm healthy. ", DateTime.Now);
+            return string.Concat($"{ApiResource.healtcheck_answer} ", DateTime.Now);
         }
     }
 }
