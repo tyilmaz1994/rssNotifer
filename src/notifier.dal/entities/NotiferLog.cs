@@ -1,6 +1,9 @@
-﻿namespace notifier.dal.entities
+﻿using notifier.dal.attributes;
+
+namespace notifier.dal.entities
 {
-    public class NotiferLog : BaseEntity
+    [MongoCollection(Name = "NotifierLog")]
+    public class NotifierLog : BaseEntity
     {
         public short LogLevel { get; set; }
 

@@ -22,7 +22,7 @@ namespace notifer.api.filters
             ILogService logService = (ILogService)_serviceProvider.GetService(typeof(ILogService));
             logService.InsertLog(context.Exception, LogLevel.ERROR);
 
-            var response = new BaseResponseModel<NotiferLog>();
+            var response = new BaseResponseModel<NotifierLog>();
             response.AddMessage(context.Exception.Message, isSuccessMessage: false);
             context.Result = new JsonResult(response);
         }

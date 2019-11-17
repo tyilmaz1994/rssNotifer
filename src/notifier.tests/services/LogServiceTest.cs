@@ -6,7 +6,7 @@ using Xunit;
 
 namespace notifier.tests.services
 {
-    public class LogServiceTest : BaseServiceTest<ILogService, NotiferLog>
+    public class LogServiceTest : BaseServiceTest<ILogService, NotifierLog>
     {
         [Fact]
         public void InsertLog_Test()

@@ -5,7 +5,7 @@ using notifier.dal.entities;
 
 namespace notifier.tests.controllers
 {
-    public class LogControllerTest : BaseControllerTest<LogController, ILogService, BaseRequestModel<NotiferLog>, BaseResponseModel<NotiferLog>, NotiferLog>
+    public class LogControllerTest : BaseControllerTest<LogController, ILogService, BaseRequestModel<NotifierLog>, BaseResponseModel<NotifierLog>, NotifierLog>
     {
         
     }

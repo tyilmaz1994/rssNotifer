@@ -7,7 +7,7 @@ namespace notifer.api.Controllers.v1._0
 {
     [Route("v1.0/log")]
     [ApiController]
-    public class LogController : AbstractController<BaseRequestModel<NotiferLog>, BaseResponseModel<NotiferLog>, ILogService, NotiferLog>
+    public class LogController : AbstractController<BaseRequestModel<NotifierLog>, BaseResponseModel<NotifierLog>, ILogService, NotifierLog>
     {
         private readonly ILogService _logService;
 

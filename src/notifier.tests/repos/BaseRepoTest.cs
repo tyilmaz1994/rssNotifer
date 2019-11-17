@@ -48,7 +48,7 @@ namespace notifier.tests.repos
 
             Assert.NotNull(entitiesAfterSaved);
 
-            Assert.Equal(entities.Count + 1, entitiesAfterSaved.Count);
+            Assert.True(entities.Count < entitiesAfterSaved.Count);
 
             var savedEntitiyAfterSave = entitiesAfterSaved.Where(x => x.Id == savedEntity.Id).FirstOrDefault();
 
@@ -76,7 +76,7 @@ namespace notifier.tests.repos
             Assert.NotNull(savedEntity.Id);
             Assert.NotNull(entitiesAfterSaved);
 
-            Assert.Equal(entities.Count + 1, entitiesAfterSaved.Count);
+            Assert.True(entities.Count < entitiesAfterSaved.Count);
         }
 
         [Fact]

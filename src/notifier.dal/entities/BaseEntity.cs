@@ -5,7 +5,6 @@ using System;
 
 namespace notifier.dal.entities
 {
-    [MongoCollection(Name = "NotiferLog")]
     public class BaseEntity
     {
         [BsonId]
