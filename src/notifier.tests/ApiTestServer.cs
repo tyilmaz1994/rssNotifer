@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.TestHost;
 using notifer;
 using System.Net.Http;
 
-namespace notifier.tests.controllers
+namespace notifier.tests
 {
     public class ApiTestServer
     {
