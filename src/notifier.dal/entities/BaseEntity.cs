@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using notifier.dal.attributes;
 using System;
 
 namespace notifier.dal.entities
