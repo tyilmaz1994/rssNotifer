@@ -7,13 +7,19 @@ namespace notifier.tests
 {
     public class ApiTestServer
     {
+        private static object locker = new object();
         protected readonly HttpClient Client;
         protected readonly TestServer TestServer;
-
         protected ApiTestServer()
         {
-            TestServer = CreateServer();
-            Client = CreateHttpClient();
+            lock (locker)
+            {
+                if(TestServer == null)
+                {
+                    TestServer = CreateServer();
+                    Client = CreateHttpClient();
+                }
+            }
         }
 
         protected TestServer CreateServer()
