@@ -6,5 +6,6 @@
         WARNING = 2,
         ERROR = 3,
         SCHEDULE_ERROR = 4,
+        TELEGRAM = 5,
     }
 }

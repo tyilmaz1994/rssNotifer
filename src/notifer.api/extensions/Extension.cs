@@ -13,6 +13,7 @@ using notifier.dal.repos;
 using Quartz;
 using Quartz.Impl;
 using System.Collections.Specialized;
+using Telegram.Bot;
 
 namespace notifer.api.extensions
 {
@@ -37,11 +38,21 @@ namespace notifer.api.extensions
         {
             services.AddTransient(typeof(IRepo<>), typeof(AbstractRepo<>));
             services.AddTransient(typeof(ILogService), typeof(LogService));
+            services.AddTransient(typeof(IUserService), typeof(UserService));
+            services.AddTransient(typeof(ITelegramGroupService), typeof(TelegramGroupService));
+            services.AddTransient(typeof(IUserRssService), typeof(UserRssService));
         }
         
         public static void RegisterHostedServices(this IServiceCollection services)
         {
             services.AddHostedService<ScheduleHostedService>();
+            services.AddHostedService<TelegramInterfaceHostedService>();
+        }
+
+        public static void TelegramRegister(this IServiceCollection services)
+        {
+            ITelegramBotClient botClient = new TelegramBotClient("{TOKEN}");
+            services.AddSingleton(telegramClient => botClient);
         }
 
         /// <summary>

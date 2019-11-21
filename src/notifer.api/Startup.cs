@@ -27,6 +27,7 @@ namespace notifer
             services.RegisterServices();
             services.RegisterScheduleComponents();
             services.RegisterHostedServices();
+            services.TelegramRegister();
             services.AddControllers();
         }
 

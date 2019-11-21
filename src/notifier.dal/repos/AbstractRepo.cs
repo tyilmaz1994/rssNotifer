@@ -35,6 +35,11 @@ namespace notifier.dal.repos
             _mongoCollection.DeleteOne(expression);
         }
 
+        public IMongoCollection<T> Query()
+        {
+            return _mongoCollection;
+        }
+
         public T Get(Expression<Func<T, bool>> expression)
         {
             return _mongoCollection.Find(expression).FirstOrDefault();
