@@ -15,5 +15,10 @@ namespace notifer.api.Controllers.v1._0
         {
             _logService = service;
         }
+
+        public override ActionResult<BaseResponseModel<NotifierLog>> Delete(string id)
+        {
+            return base.Delete(null);
+        }
     }
 }

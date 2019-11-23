@@ -1,4 +1,6 @@
-﻿using notifier.dal.attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using notifier.dal.attributes;
+using System;
 
 namespace notifier.dal.entities
 {
@@ -10,6 +12,9 @@ namespace notifier.dal.entities
         public string RssId { get; set; }
 
         public string GroupId { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        public DateTime CheckDate { get; set; } = DateTime.Now;
 
         public bool WouldBeSentCreator { get; set; }
 

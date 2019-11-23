@@ -2,7 +2,7 @@
 {
     public class NotifierDbContext : INotifierDbContext
     {
-        public string ConnectionString { get { return "mongodb://localhost:27017"; } }
+        public string ConnectionString { get { return "mongodb://my-mongodb:27017"; } }
 
         public string LogCollectionName { get { return "log"; } }
 

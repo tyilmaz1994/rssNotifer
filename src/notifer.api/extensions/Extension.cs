@@ -40,7 +40,9 @@ namespace notifer.api.extensions
             services.AddTransient(typeof(ILogService), typeof(LogService));
             services.AddTransient(typeof(IUserService), typeof(UserService));
             services.AddTransient(typeof(ITelegramGroupService), typeof(TelegramGroupService));
+            services.AddTransient(typeof(IUserSubscribeService), typeof(UserSubscribeService));
             services.AddTransient(typeof(IUserRssService), typeof(UserRssService));
+            services.AddTransient(typeof(IScheduleSubscribeService), typeof(ScheduleSubscribeService));
         }
         
         public static void RegisterHostedServices(this IServiceCollection services)

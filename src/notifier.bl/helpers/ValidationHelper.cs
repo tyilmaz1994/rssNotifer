@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel.Syndication;
+using System.Text;
 using System.Xml;
 
 namespace notifier.bl.helpers
@@ -16,7 +17,7 @@ namespace notifier.bl.helpers
             {
                 SyndicationFeed syndicationFeed;
 
-                using (XmlReader xr = XmlReader.Create(new MemoryStream(_rssInByte(url))))
+                using (XmlReader xr = XmlReader.Create(new MemoryStream(RssInByte(url))))
                 {
                     syndicationFeed = SyndicationFeed.Load(xr);
                 }
@@ -30,7 +31,7 @@ namespace notifier.bl.helpers
             }
         }
 
-        private static byte[] _rssInByte(string url)
+        public static byte[] RssInByte(string url)
         {
             byte[] datas;
             using (WebClient wc = new WebClient())

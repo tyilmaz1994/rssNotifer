@@ -21,11 +21,11 @@ namespace notifier.bl.hostedServices
         private readonly ITelegramGroupService _telegramGroupService;
         private readonly ILogService _logService;
         private readonly IUserRssService _userRssService;
-        private readonly IUserSubscribeService _userSubscribeService;
-
+        private readonly IScheduleSubscribeService _userSubscribeService;
+        
         public TelegramInterfaceHostedService(ITelegramBotClient telegramBotClient, IUserService userService
             , ITelegramGroupService telegramGroupService, ILogService logService
-            , IUserRssService userRssService, IUserSubscribeService userSubscribeService)
+            , IUserRssService userRssService, IScheduleSubscribeService userSubscribeService)
         {
             _telegramBotClient = telegramBotClient;
             _userService = userService;
