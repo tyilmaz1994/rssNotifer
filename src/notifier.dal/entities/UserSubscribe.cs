@@ -13,7 +13,7 @@ namespace notifier.dal.entities
 
         public string GroupId { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime CheckDate { get; set; } = DateTime.Now;
 
         public bool WouldBeSentCreator { get; set; }
