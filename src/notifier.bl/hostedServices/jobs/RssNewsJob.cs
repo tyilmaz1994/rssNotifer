@@ -47,7 +47,7 @@ namespace notifier.bl.hostedServices.jobs
                 Console.WriteLine(subscription.CheckDate);
 
                 foreach (var item in latestNews)
-                    Console.WriteLine(item.PublishDate.ToUniversalTime());
+                    Console.WriteLine(item.PublishDate.ToUniversalTime().DateTime);
 
                 if(latestNews.Any())
                 {
