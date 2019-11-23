@@ -42,9 +42,9 @@ namespace notifier.bl.hostedServices.jobs
                 var rss = _userRssService.Get(x => x.Id == mappedData.GetString(ScheduleConsts.RSS_ID));
                 var subscription = _userSubscribeService.Get(x => x.Id == context.Trigger.Key.Name);
 
-                var latestNews = RssHelper.GetLatestUpdates(_logService, rss.Url, subscription.CheckDate.ToUniversalTime());
+                var latestNews = RssHelper.GetLatestUpdates(_logService, rss.Url, subscription.CheckDate);
 
-                Console.WriteLine(subscription.CheckDate.ToUniversalTime());
+                Console.WriteLine(subscription.CheckDate);
 
                 foreach (var item in latestNews)
                     Console.WriteLine(item.PublishDate);
@@ -73,7 +73,7 @@ namespace notifier.bl.hostedServices.jobs
                         });
                     }
 
-                    subscription.CheckDate = DateTime.UtcNow;
+                    subscription.CheckDate = DateTime.Now;
                     _userSubscribeService.Save(subscription);
                 }
             }

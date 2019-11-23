@@ -18,7 +18,7 @@ namespace notifier.bl.helpers
                 using (XmlReader reader = XmlReader.Create(new MemoryStream(ValidationHelper.RssInByte(rssUrl))))
                 {
                     var items = SyndicationFeed.Load(reader);
-                     return items.Items.Where(x => x.PublishDate.UtcDateTime > checkDate).ToList();
+                     return items.Items.Where(x => x.PublishDate > checkDate).ToList();
                 }
             }
             catch (Exception ex)
