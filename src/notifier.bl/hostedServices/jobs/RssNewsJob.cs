@@ -42,7 +42,7 @@ namespace notifier.bl.hostedServices.jobs
                 var rss = _userRssService.Get(x => x.Id == mappedData.GetString(ScheduleConsts.RSS_ID));
                 var subscription = _userSubscribeService.Get(x => x.Id == context.Trigger.Key.Name);
 
-                var latestNews = RssHelper.GetLatestUpdates(_logService, rss.Url, subscription.CheckDate);
+                var latestNews = RssHelper.GetLatestUpdates(_logService, rss.Url, subscription.CheckDate.ToUniversalTime());
 
                 if(latestNews.Any())
                 {
