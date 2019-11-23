@@ -68,7 +68,7 @@ namespace notifier.bl.hostedServices.jobs
                         });
                     }
 
-                    subscription.CheckDate = DateTime.Now;
+                    subscription.CheckDate = DateTime.UtcNow;
                     _userSubscribeService.Save(subscription);
                 }
             }
