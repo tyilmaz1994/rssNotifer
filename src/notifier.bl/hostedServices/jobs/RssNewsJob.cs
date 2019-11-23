@@ -44,6 +44,11 @@ namespace notifier.bl.hostedServices.jobs
 
                 var latestNews = RssHelper.GetLatestUpdates(_logService, rss.Url, subscription.CheckDate.ToUniversalTime());
 
+                Console.WriteLine(subscription.CheckDate.ToUniversalTime());
+
+                foreach (var item in latestNews)
+                    Console.WriteLine(item.PublishDate);
+
                 if(latestNews.Any())
                 {
                     var user = _userService.Get(x => x.Id == mappedData.GetString(ScheduleConsts.USER_ID));
