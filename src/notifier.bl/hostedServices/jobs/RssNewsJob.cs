@@ -73,7 +73,7 @@ namespace notifier.bl.hostedServices.jobs
                         });
                     }
 
-                    subscription.CheckDate = DateTime.Now;
+                    subscription.CheckDate = latestNews.Max(x => x.PublishDate).DateTime;
                     _userSubscribeService.Save(subscription);
                 }
             }
