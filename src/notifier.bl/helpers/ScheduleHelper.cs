@@ -17,7 +17,7 @@ namespace notifier.bl.helpers
                 .UsingJobData(ScheduleConsts.CHECKDATE, userSubscribe.CheckDate.ToString())
                 .WithIdentity(userSubscribe.Id, userSubscribe.UserId)
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(userSubscribe.CheckPeriod).RepeatForever())
                 .Build();
         }
 
