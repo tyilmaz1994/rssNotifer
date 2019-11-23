@@ -1,4 +1,5 @@
-﻿using notifier.dal.entities;
+﻿using MongoDB.Driver;
+using notifier.dal.entities;
 using notifier.dal.persistence;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,11 @@ namespace notifier.bl.services
             return _repo.GetList(expression);
         }
 
+        public IMongoCollection<T> GetCollection()
+        {
+            return _repo.Query();
+        }
+
         /// <summary>
         /// Add or Update record depends on its Id.
         /// If id is null then record will be saved.
@@ -32,14 +38,14 @@ namespace notifier.bl.services
         /// </summary>
         /// <param name="entity">the entity of save or update action</param>
         /// <returns>itself after action perform</returns>
-        public T Save(T entity)
+        public virtual T Save(T entity)
         {
             if(entity.Id == null)
                 return _repo.Add(entity);
             else return _repo.Update(entity);
         }
 
-        public void Delete(Expression<Func<T, bool>> expression)
+        public virtual void Delete(Expression<Func<T, bool>> expression)
         {
             _repo.Delete(expression);
         }
@@ -50,6 +56,8 @@ namespace notifier.bl.services
         T Get(Expression<Func<T, bool>> expression);
 
         IList<T> GetList(Expression<Func<T, bool>> expression);
+
+        IMongoCollection<T> GetCollection();
 
         T Save(T entity);
 

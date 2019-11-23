@@ -14,7 +14,7 @@ namespace notifier.bl.services
 
         public UserRss AddRssIfNotExist(UserRss input)
         {
-            var rss = _repo.Get(x => x.UserId == input.UserId && x.Url == input.Url);
+            var rss = _repo.Get(x => x.UserId == input.UserId && x.Url == input.Url.Trim());
             if (rss == null)
                 return _repo.Add(input);
             else return _repo.Update(rss);

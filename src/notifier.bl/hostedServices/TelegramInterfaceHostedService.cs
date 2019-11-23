@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using MongoDB.Driver;
 using notifier.bl.const_;
 using notifier.bl.helpers;
 using notifier.bl.services;
@@ -20,23 +21,121 @@ namespace notifier.bl.hostedServices
         private readonly ITelegramGroupService _telegramGroupService;
         private readonly ILogService _logService;
         private readonly IUserRssService _userRssService;
+        private readonly IUserSubscribeService _userSubscribeService;
 
         public TelegramInterfaceHostedService(ITelegramBotClient telegramBotClient, IUserService userService
             , ITelegramGroupService telegramGroupService, ILogService logService
-            , IUserRssService userRssService)
+            , IUserRssService userRssService, IUserSubscribeService userSubscribeService)
         {
             _telegramBotClient = telegramBotClient;
             _userService = userService;
             _telegramGroupService = telegramGroupService;
             _logService = logService;
             _userRssService = userRssService;
+            _userSubscribeService = userSubscribeService;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _telegramBotClient.OnMessage += Command_Received;
+            _telegramBotClient.OnCallbackQuery += Menu_Callbacks;
             _telegramBotClient.StartReceiving();
             return Task.CompletedTask;
+        }
+
+        private void Menu_Callbacks(object sender, CallbackQueryEventArgs e)
+        {
+            Task.Run(() =>
+            {
+                string callbackData = e.CallbackQuery.Data;
+                string[] callbackDataSplitted = callbackData.Split(" ");
+
+                var rssUser = _userService.Get(x => x.TelegramId == e.CallbackQuery.From.Id);
+
+                if (callbackData == TelegramBotCommands.CALLBACK_SUBSCRIBE)
+                {
+                    //will be rearanged with mongodb aggregation in order to query one time.
+                    var userRssList = _userRssService.GetList(x => x.UserId == rssUser.Id);
+                    var userGroupCount = _telegramGroupService.GetCollection().Count(x => x.UserId == rssUser.Id);
+                    var userSubscribeList = _userSubscribeService.GetList(x => x.UserId == rssUser.Id);
+
+                    userRssList = userRssList.Where(x => (userSubscribeList.Count(y => y.RssId == x.Id) < userGroupCount)).ToList();
+
+                    var customRssMenu = userRssList.ToMenu(TelegramBotCommands.KEY_RSS_SUBSCRIBE);
+
+                    _telegramBotClient.EditMessageTextAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Message.MessageId, TelegramBotCommands.SUBSCRIBE_INFORMATION,
+                        replyMarkup: customRssMenu);
+                }
+                else if (callbackData == TelegramBotCommands.CALLBACK_UNSUBSCRIBE)
+                {
+                    //will be rearanged with mongodb aggregation in order to query one time.
+                    var userRssList = _userRssService.GetList(x => x.UserId == rssUser.Id);
+                    var userSubscribeList = _userSubscribeService.GetList(x => x.UserId == rssUser.Id);
+
+                    userRssList = userRssList.Where(x => userSubscribeList.Any(y => y.RssId == x.Id)).ToList();
+
+                    var customRssMenu = userRssList.ToMenu(TelegramBotCommands.KEY_RSS_UNSUBSCRIBE);
+
+                    _telegramBotClient.EditMessageTextAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Message.MessageId, TelegramBotCommands.UNSUBSCRIBE_INFORMATION,
+                        replyMarkup: customRssMenu);
+                }
+                else if (callbackData == TelegramBotCommands.CALLBACK_HOME)
+                {
+                    _telegramBotClient.SendStartMenu(e.CallbackQuery.From.Id, e.CallbackQuery.Message.MessageId);
+                }
+                else if (callbackDataSplitted.CallbackIsEqualTo(TelegramBotCommands.KEY_RSS_SUBSCRIBE))
+                {
+                    //will be rearanged with mongodb aggregation in order to query one time.
+                    var userGroupList = _telegramGroupService.GetList(x => x.UserId == rssUser.Id);
+                    var userSubscribeList = _userSubscribeService.GetList(x => x.UserId == rssUser.Id);
+                    string rssId = callbackData.RemoveFirstChar().RemoveFirstChar();
+
+                    userGroupList = userGroupList.Where(x => !userSubscribeList.Any(y => y.GroupId == x.Id && y.RssId == rssId)).ToList();
+
+                    var customGroupMenu = userGroupList.ToMenu(string.Concat(TelegramBotCommands.KEY_RSS_SUBSCRIBE_GROUP, callbackData.RemoveFirstChar()));
+
+                    _telegramBotClient.EditMessageTextAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Message.MessageId, TelegramBotCommands.SUBSCRIBE_GROUP_INFORMATION,
+                        replyMarkup: customGroupMenu, parseMode: ParseMode.Html);
+                }
+                else if (callbackDataSplitted.CallbackIsEqualTo(TelegramBotCommands.KEY_RSS_UNSUBSCRIBE))
+                {
+                    //will be rearanged with mongodb aggregation in order to query one time.
+                    var userGroupList = _telegramGroupService.GetList(x => x.UserId == rssUser.Id);
+                    var userSubscribeList = _userSubscribeService.GetList(x => x.UserId == rssUser.Id);
+                    string rssId = callbackData.RemoveFirstChar().RemoveFirstChar();
+
+                    userGroupList = userGroupList.Where(x => userSubscribeList.Any(y => y.GroupId == x.Id && y.RssId == rssId)).ToList();
+
+                    var customGroupMenu = userGroupList.ToMenu(string.Concat(TelegramBotCommands.KEY_RSS_UNSUBSCRIBE_GROUP, " ", callbackData.RemoveFirstChar()));
+
+                    _telegramBotClient.EditMessageTextAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Message.MessageId, TelegramBotCommands.UNSUBSCRIBE_GROUP_INFORMATION,
+                        replyMarkup: customGroupMenu);
+                }
+                else if (callbackDataSplitted.CallbackIsEqualTo(TelegramBotCommands.KEY_RSS_SUBSCRIBE_GROUP))
+                {
+                    string[] Ids = callbackData.RemoveFirstChar().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                    //Index 0: RSS
+                    //Index 1: GROUP
+                    _userSubscribeService.Save(new dal.entities.UserSubscribe
+                    {
+                        UserId = rssUser.Id,
+                        GroupId = Ids[1],
+                        RssId = Ids[0],
+                    });
+
+                    _telegramBotClient.EditMessageTextAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Message.MessageId, TelegramBotCommands.USER_SUBSCRIBE_INFORMATION
+                        , replyMarkup: TelegramHelper.CreateMenu(TelegramMenu.BUTTONS_SUBSCRIBE_UNSUBSCRIBE));
+                }
+                else if (callbackDataSplitted.CallbackIsEqualTo(TelegramBotCommands.KEY_RSS_UNSUBSCRIBE_GROUP))
+                {
+                    string[] Ids = callbackData.RemoveFirstChar().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                    //Index 0: RSS
+                    //Index 1: GROUP
+                    _userSubscribeService.Delete(x => x.RssId == Ids[0] && x.UserId == rssUser.Id && x.GroupId == Ids[1]);
+                    _telegramBotClient.EditMessageTextAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Message.MessageId, TelegramBotCommands.USER_UNSUBSCRIBE_INFORMATION
+                        , replyMarkup: TelegramHelper.CreateMenu(TelegramMenu.BUTTONS_SUBSCRIBE_UNSUBSCRIBE));
+                }
+            });
         }
 
         private void Command_Received(object sender, MessageEventArgs e)
@@ -69,6 +168,9 @@ namespace notifier.bl.hostedServices
                                 Title = chat.Title,
                                 Username = chat.Username,
                             });
+
+                            if(addedGroup != null)
+                                _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.CHANNEL_ADDED_INFORMATION, ParseMode.Html);
                         }
                         catch (Exception ex)
                         {
@@ -87,15 +189,26 @@ namespace notifier.bl.hostedServices
                                 Url = rss,
                                 UserId = requestUser.Id,
                             });
+
+                            if(userRss != null)
+                                _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.RSS_ADDED_INFORMATION, ParseMode.Html);
                         }
                         else
                         {
                             _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.RSS_IS_NOT_VALID);
                         }
                     }
+                    else if(e.Message.Text == TelegramBotCommands.MENU)
+                    {
+                        _telegramBotClient.SendStartMenu(e.Message.Chat.Id);
+                    }
                     else if (e.Message.Text == TelegramBotCommands.HELP || e.Message.Text == TelegramBotCommands.START)
                     {
-                        _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.HELP_INFORMATION);
+                        _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.HELP_INFORMATION, ParseMode.Html);
+                    }
+                    else if (e.Message.Text == TelegramBotCommands.ABOUT_ME)
+                    {
+                        _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.ABOUT_ME_INFORMATION, ParseMode.Html);
                     }
                 }
                 else if (e.Message.Type == MessageType.GroupCreated || e.Message.Type == MessageType.ChatMembersAdded)
@@ -117,6 +230,7 @@ namespace notifier.bl.hostedServices
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _telegramBotClient.OnMessage -= Command_Received;
+            _telegramBotClient.OnCallbackQuery -= Menu_Callbacks;
             _telegramBotClient.StopReceiving();
             return Task.CompletedTask;
         }

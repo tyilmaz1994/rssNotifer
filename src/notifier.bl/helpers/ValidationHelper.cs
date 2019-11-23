@@ -25,7 +25,7 @@ namespace notifier.bl.helpers
             }
             catch(Exception ex)
             {
-                logService.InsertLog(ex, enums.LogLevel.TELEGRAM);
+                logService?.InsertLog(ex, enums.LogLevel.TELEGRAM);
                 return false;
             }
         }
