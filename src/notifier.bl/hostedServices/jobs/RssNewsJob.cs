@@ -47,7 +47,7 @@ namespace notifier.bl.hostedServices.jobs
                 Console.WriteLine(subscription.CheckDate);
 
                 foreach (var item in latestNews)
-                    Console.WriteLine(item.PublishDate);
+                    Console.WriteLine(item.PublishDate.ToUniversalTime());
 
                 if(latestNews.Any())
                 {
@@ -73,7 +73,7 @@ namespace notifier.bl.hostedServices.jobs
                         });
                     }
 
-                    subscription.CheckDate = latestNews.Max(x => x.PublishDate).DateTime;
+                    subscription.CheckDate = DateTime.Now;
                     _userSubscribeService.Save(subscription);
                 }
             }
