@@ -32,6 +32,8 @@ services:
         restart: always
         environment:
             - "token=${BOT_TOKEN}"
+        ports:
+            - 80:80
         networks:
             - mongo_net
         depends_on:
