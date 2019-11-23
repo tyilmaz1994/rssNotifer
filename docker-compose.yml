@@ -30,8 +30,8 @@ services:
             context: .
             dockerfile: src/notifer.api/Dockerfile
         restart: always
-        ports:
-          - 192.168.0.111:5000:5000
+        environment:
+            - "token=${BOT_TOKEN}"
         networks:
             - mongo_net
         depends_on:

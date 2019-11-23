@@ -12,6 +12,7 @@ using notifier.dal.persistence;
 using notifier.dal.repos;
 using Quartz;
 using Quartz.Impl;
+using System;
 using System.Collections.Specialized;
 using Telegram.Bot;
 
@@ -53,7 +54,7 @@ namespace notifer.api.extensions
 
         public static void TelegramRegister(this IServiceCollection services)
         {
-            ITelegramBotClient botClient = new TelegramBotClient("{TOKEN}");
+            ITelegramBotClient botClient = new TelegramBotClient(Environment.GetEnvironmentVariable("token"));
             services.AddSingleton(telegramClient => botClient);
         }
 
