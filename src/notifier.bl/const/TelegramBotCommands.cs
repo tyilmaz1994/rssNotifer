@@ -16,10 +16,14 @@
         public const string UNSUBSCRIBE_INFORMATION = "Do you want to stop receiving notification? Choose one of the below. If below list is empty, then you did not subscribe any RSS.";
         public const string UNSUBSCRIBE_GROUP_INFORMATION = "the selected RSS sends notification to below groups/channels. If you want to stop sending RSS news, then choose one of the below.";
         public const string CHANNEL_ADDED_INFORMATION = "Channel is successfully added. <b>If you added any rss link</b>, go head start getting notification using /menu command.";
-        public const string RSS_ADDED_INFORMATION = "RSS is successfuly added. Did you add any channel or group using /channel or inviting bot(@RssServiceBot) to telegram group ? If answer is <b>yes</b>, then you can start receiving notitification using /menu command.";
+        public const string RSS_ADDED_INFORMATION = "RSS is successfuly added. Did you add any channel or group using /channel or inviting bot(@RssServiceBot) to telegram group ? If answer is <b>yes</b>, then you can start receiving notitification using /menu command.\n\n<b>If you did not invite me any group or channel, then you may not see your rss list in Subscribe menu</b>";
         public const string ABOUT_ME_INFORMATION = "contact me\n\n- @tunahanyilmaz\n- https://www.linkedin.com/in/tunahanyilmaz/\n- https://github.com/tyilmaz1994\n- tunahan.yilmaz94@gmail.com";
         public const string USER_SUBSCRIBE_INFORMATION = "Successfuly subscribed.";
         public const string USER_UNSUBSCRIBE_INFORMATION = "Successfuly unsubscribed.";
+        public const string INSERT_RSS_INFORMATION = "Send me to rss link";
+        public const string INSERT_CHANNEL_INFORMATION = "Send me to channel username with @ prefix";
+        public const string INSERT_CHANNEL_INFORMATION_ERROR = "Channel is not found. Send me to channel username with @ prefix like @channel_username";
+        public const string COMMAND_NOT_FOUND = "Command is not found.";
 
 
         public const string CALLBACK_SUBSCRIBE = "Subscribe";

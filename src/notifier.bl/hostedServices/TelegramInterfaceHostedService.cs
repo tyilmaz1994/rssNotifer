@@ -175,7 +175,7 @@ namespace notifier.bl.hostedServices
                         catch (Exception ex)
                         {
                             _logService.InsertLog(ex, enums.LogLevel.TELEGRAM);
-                            _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, ex.Message);
+                            _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.INSERT_CHANNEL_INFORMATION_ERROR, ParseMode.Html);
                         }
                     }
                     else if (e.Message.Text.Trim().StartsWith(TelegramBotCommands.INSERT_RSS) && e.Message.Text != TelegramBotCommands.INSERT_RSS)
@@ -209,6 +209,55 @@ namespace notifier.bl.hostedServices
                     else if (e.Message.Text == TelegramBotCommands.ABOUT_ME)
                     {
                         _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.ABOUT_ME_INFORMATION, ParseMode.Html);
+                    }
+                    else if (e.Message.Text == TelegramBotCommands.INSERT_RSS)
+                    {
+                        _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.INSERT_RSS_INFORMATION, ParseMode.Html);
+                    }
+                    else if (e.Message.Text == TelegramBotCommands.INSERT_CHANNEL)
+                    {
+                        _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.INSERT_CHANNEL_INFORMATION, ParseMode.Html);
+                    }
+                    else if (e.Message.Text.StartsWith('@'))
+                    {
+                        try
+                        {
+                            ChatId chatId = new ChatId(e.Message.Text.Trim());
+                            Chat chat = _telegramBotClient.GetChatAsync(chatId).Result;
+                            var addedGroup = _telegramGroupService.AddGroupIfNotExist(new dal.entities.TelegramGroup
+                            {
+                                ChatId = chat.Id,
+                                UserId = requestUser.Id,
+                                Firstname = chat.FirstName,
+                                Description = chat.Description,
+                                Lastname = chat.LastName,
+                                Title = chat.Title,
+                                Username = chat.Username,
+                            });
+
+                            if (addedGroup != null)
+                                _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.CHANNEL_ADDED_INFORMATION, ParseMode.Html);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logService.InsertLog(ex, enums.LogLevel.TELEGRAM);
+                            _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.INSERT_CHANNEL_INFORMATION_ERROR, ParseMode.Html);
+                        }
+                    }
+                    else if(ValidationHelper.IsRss(e.Message.Text, _logService))
+                    {
+                        var userRss = _userRssService.AddRssIfNotExist(new dal.entities.UserRss
+                        {
+                            Url = e.Message.Text.Trim(),
+                            UserId = requestUser.Id,
+                        });
+
+                        if (userRss != null)
+                            _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.RSS_ADDED_INFORMATION, ParseMode.Html);
+                    }
+                    else
+                    {
+                        _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands., ParseMode.Html);
                     }
                 }
                 else if (e.Message.Type == MessageType.GroupCreated || e.Message.Type == MessageType.ChatMembersAdded)
