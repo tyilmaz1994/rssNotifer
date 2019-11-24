@@ -257,7 +257,7 @@ namespace notifier.bl.hostedServices
                     }
                     else
                     {
-                        _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands., ParseMode.Html);
+                        _telegramBotClient.SendTextMessageAsync(e.Message.Chat.Id, TelegramBotCommands.COMMAND_NOT_FOUND, ParseMode.Html);
                     }
                 }
                 else if (e.Message.Type == MessageType.GroupCreated || e.Message.Type == MessageType.ChatMembersAdded)
