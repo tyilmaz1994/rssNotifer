@@ -40,9 +40,9 @@ namespace notifier.bl.hostedServices.jobs
             {
                 var mappedData = context.MergedJobDataMap;
                 var rss = _userRssService.Get(x => x.Id == mappedData.GetString(ScheduleConsts.RSS_ID));
-                if(rss == null) return Task.CompletedTask;
+                if(rss == null) return;
                 var subscription = _userSubscribeService.Get(x => x.Id == context.Trigger.Key.Name);
-                if(subscription == null) return Task.CompletedTask;
+                if(subscription == null) return;
                 var latestNews = RssHelper.GetLatestUpdates(_logService, rss.Url, subscription.CheckDate.AddHours(3));
 
                 if(latestNews.Any())
